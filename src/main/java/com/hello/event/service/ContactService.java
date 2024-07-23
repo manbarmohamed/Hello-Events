@@ -17,6 +17,8 @@ public class ContactService {
         return contactRepository.findAll();
     }
 
-
+    public Contact addContact(Contact contact) {
+        return contactRepository.save(contact);
+    }
 
 }
