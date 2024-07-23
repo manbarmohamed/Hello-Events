@@ -19,6 +19,10 @@ public class Reservation {
     private Long id;
     private LocalDateTime dateTime;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToMany(mappedBy = "reservation")
     @JsonIgnore
     private List<Event> events;

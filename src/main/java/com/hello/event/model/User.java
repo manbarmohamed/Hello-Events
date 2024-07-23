@@ -28,8 +28,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 225)
     private Role role;
-
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations;
+
 }
