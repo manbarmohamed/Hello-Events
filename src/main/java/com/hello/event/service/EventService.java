@@ -21,6 +21,8 @@ public class EventService {
     public Event save(Event event) {
         return eventRepository.save(event);
     }
-    
+    public List<Event> search(Category category, String location, LocalDateTime date) {
+        return eventRepository.findEventByCategoryOrLocationOrDateTime(category, location, date);
+    }
 
 }
