@@ -1,5 +1,6 @@
 package com.hello.event.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import com.hello.event.enums.Category;
@@ -29,8 +30,9 @@ public class Event {
     @Column(name = "category", nullable = false, length = 225)
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id" , nullable = false)
+    @JsonIgnore
     private Reservation reservation;
 
 

@@ -6,12 +6,9 @@ import lombok.*;
 
 @Setter
 @Getter
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-@Entity
 public class LoginResponse {
     @Id
     private Long id;
