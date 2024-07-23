@@ -25,5 +25,9 @@ public class EventController {
         return ResponseEntity.ok(eventService.save(event));
     }
 
-
+    @GetMapping("/search")
+    public ResponseEntity<List<Event>> searchEvents(@RequestParam Category category, String location, LocalDateTime date) {
+        List<Event> eventList = eventService.search(category, location, date);
+        return ResponseEntity.ok(eventList);
+    }
 }
