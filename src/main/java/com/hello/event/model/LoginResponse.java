@@ -11,7 +11,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @ToString
-@Entity
 public class LoginResponse {
     @Id
     private Long id;
