@@ -20,5 +20,10 @@ public class EventController {
     public ResponseEntity<List<Event>> getAllEvents() {
         return ResponseEntity.ok(eventService.findAll());
     }
-    
+    @PostMapping("/add")
+    public ResponseEntity<Event> addEvent(@RequestBody Event event) {
+        return ResponseEntity.ok(eventService.save(event));
+    }
+
+
 }
