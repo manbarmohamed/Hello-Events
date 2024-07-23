@@ -10,7 +10,6 @@ import com.hello.event.enums.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 public class User {
     @Id
@@ -30,6 +29,7 @@ public class User {
     private Role role;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Reservation> reservations;
 
 }
