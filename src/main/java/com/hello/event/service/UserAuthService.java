@@ -34,7 +34,7 @@ public class UserAuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = (User) userRepository.findByName(username);
+        User user = (User) userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
@@ -46,7 +46,7 @@ public class UserAuthService implements UserDetailsService {
     }
 
     public JwtResponseDTO signUp(User userRequest) {
-        if (userRepository.findByName(userRequest.getName()) != null) {
+        if (userRepository.findByUsername(userRequest.getName()) != null) {
             throw new RuntimeException("Username is already taken.");
         }
 
@@ -63,11 +63,11 @@ public class UserAuthService implements UserDetailsService {
 
     public JwtResponseDTO login(AuthRequestDTO authRequestDTO) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequestDTO.getName(), authRequestDTO.getPassword())
+                new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword())
         );
 
         if (authentication.isAuthenticated()) {
-            User user = (User) userRepository.findByName(authRequestDTO.getName());
+            User user = (User) userRepository.findByUsername(authRequestDTO.getUsername());
             String token = jwtService.generateToken(user.getName());
 
             return JwtResponseDTO.builder()
