@@ -16,29 +16,60 @@ public class UserController {
   @Autowired
   private UserService userService;
 
-  @GetMapping("/all")
+//
+//
+//  @GetMapping("/{id}")
+//  public ResponseEntity<User> getUserById(@PathVariable Long id) {
+//    User user = userService.getUserById(id);
+//    if (user != null) {
+//      return ResponseEntity.ok(user);
+//    } else {
+//      return ResponseEntity.notFound().build();
+//    }
+//  }
+//
+//  @PostMapping
+//  public ResponseEntity<User> addUser(@RequestBody User user) {
+//    User savedUser = userService.saveUser(user);
+//    return ResponseEntity.ok(savedUser);
+//  }
+//
+//  @DeleteMapping("/{id}")
+//  public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+//    try {
+//      userService.deleteUser(id);
+//      return ResponseEntity.noContent().build();
+//    } catch (RuntimeException e) {
+//      return ResponseEntity.notFound().build();
+//    }
+//  }
+//
+//  @PutMapping("/{id}")
+//  public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+//    try {
+//      User updatedUser = userService.updateUser(user, id);
+//      return ResponseEntity.ok(updatedUser);
+//    } catch (RuntimeException e) {
+//      return ResponseEntity.notFound().build();
+//    }
+//  }
+
+  @GetMapping("/users")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<List<User>> getAllUsers() {
     List<User> users = userService.getAllUsers();
     return ResponseEntity.ok(users);
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<User> getUserById(@PathVariable Long id) {
-    User user = userService.getUserById(id);
-    if (user != null) {
-      return ResponseEntity.ok(user);
-    } else {
-      return ResponseEntity.notFound().build();
-    }
-  }
-
   @PostMapping
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<User> addUser(@RequestBody User user) {
     User savedUser = userService.saveUser(user);
     return ResponseEntity.ok(savedUser);
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
     try {
       userService.deleteUser(id);
@@ -49,6 +80,7 @@ public class UserController {
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
     try {
       User updatedUser = userService.updateUser(user, id);
@@ -56,16 +88,7 @@ public class UserController {
     } catch (RuntimeException e) {
       return ResponseEntity.notFound().build();
     }
-  }}
-//@PreAuthorize("hasRole('ADMIN')")
-//@GetMapping("/admin")
-//public ResponseEntity<String> helloAdmin(){
-//  return ResponseEntity.ok("Hello Admin");
-//}
-//
-//  @PreAuthorize("hasRole('USER')")
-//  @GetMapping("/user")
-//  public ResponseEntity<String> helloUser(){
-//    return ResponseEntity.ok("Hello User");
-//  }
-//}
+  }
+}
+
+
