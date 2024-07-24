@@ -8,12 +8,12 @@ import com.hello.event.model.*;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 
 public class Event {
@@ -24,16 +24,14 @@ public class Event {
     private String description;
     private LocalDateTime dateTime;
     private String location ;
-    private String capacity;
+    private Integer capacity;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false, length = 225)
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_id" , nullable = false)
-    @JsonIgnore
-    private Reservation reservation;
+   @OneToMany(mappedBy = "event")
+    List<Reservation> reservations;
 
 
 
