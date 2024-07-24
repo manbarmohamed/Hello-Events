@@ -8,6 +8,7 @@ import com.hello.event.model.*;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,9 +31,9 @@ public class Event {
     @Column(name = "category", nullable = false, length = 225)
     private Category category;
 
-   @OneToMany(mappedBy = "event")
-    List<Reservation> reservations;
+//   @OneToMany(mappedBy = "event")
+//    List<Reservation> reservations;
 
-
-
+@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<Contact> contacts = new ArrayList<>();
 }

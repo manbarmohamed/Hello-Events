@@ -15,4 +15,13 @@ public class Contact {
     private String name;
     private String email;
     private String message;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
+//    private User user;
+
+@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name = "event_id")
+private Event event;
+
+
 }

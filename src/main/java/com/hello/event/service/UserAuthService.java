@@ -1,4 +1,3 @@
-
 package com.hello.event.service;
 
 import com.hello.event.dto.AuthRequestDTO;
@@ -37,7 +36,7 @@ public class UserAuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = (User) userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
@@ -50,11 +49,11 @@ public class UserAuthService implements UserDetailsService {
 
     public JwtResponseDTO signUp(User userRequest) {
         if (userRepository.findByUsername(userRequest.getName()) != null) {
-            throw new RuntimeException("Username is already taken.");
+            throw new UsernameAlreadyTaken("Username is already taken.");
         }
-//        if (userRequest.getRole() == null) {
-//            userRequest.setRole(Role.CLIENT); // Assuming Role is an enum with CLIENT value
-//        }
+        if (userRequest.getRole() == null) {
+            userRequest.setRole(Role.CLIENT); // Définir un rôle par défaut
+        }
 
         userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         User savedUser = userRepository.save(userRequest);
@@ -62,6 +61,7 @@ public class UserAuthService implements UserDetailsService {
 
         return JwtResponseDTO.builder()
                 .accessToken(token)
+                .username(savedUser.getName())
                 .build();
     }
 
@@ -71,11 +71,12 @@ public class UserAuthService implements UserDetailsService {
         );
 
         if (authentication.isAuthenticated()) {
-            User user = (User) userRepository.findByUsername(authRequestDTO.getUsername());
-            String token = jwtService.generateToken(user.getName());
+            User user = userRepository.findByUsername(authRequestDTO.getUsername());
+            String token = jwtService.generateToken(user.getUsername());
 
             return JwtResponseDTO.builder()
                     .accessToken(token)
+                    .username(user.getUsername())
                     .build();
         } else {
             throw new UsernameNotFoundException("Invalid user request.");

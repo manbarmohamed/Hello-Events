@@ -31,6 +31,7 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String username;
 
+
     @Column(nullable = false)
     private String name;
 
@@ -52,6 +53,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations;
 
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Contact> contacts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
