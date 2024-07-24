@@ -12,6 +12,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.util.Collection;
+import java.util.List;
+import com.hello.event.enums.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,27 +28,30 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private String email;
-
-    @JsonIgnore
-    @Column(nullable = false)
     private String password;
 
+    @Column
     private String phone;
+
+    @Column
     private String address;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
 
+
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private List<Reservation> reservations;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -52,31 +61,36 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
-        return this.email;
-    }
-
-    @Override
-    @JsonIgnore
     public boolean isAccountNonExpired() {
-        return true; // Customize this logic if needed
+return true;
     }
 
     @Override
-    @JsonIgnore
     public boolean isAccountNonLocked() {
-        return true; // Customize this logic if needed
+        return UserDetails.super.isAccountNonLocked();
     }
 
     @Override
-    @JsonIgnore
     public boolean isCredentialsNonExpired() {
-        return true; // Customize this logic if needed
+        return UserDetails.super.isCredentialsNonExpired();
     }
 
     @Override
-    @JsonIgnore
     public boolean isEnabled() {
-        return true; // Customize this logic if needed
+        return UserDetails.super.isEnabled();
     }
 }
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return role != null ?
+//                List.of(new SimpleGrantedAuthority(role.name())) :
+//                List.of();
+//    }
+//
+//
+//    @Override
+//    @JsonIgnore
+//    public boolean isAccountNonExpired() {
+//        return true;
+//    }
+
