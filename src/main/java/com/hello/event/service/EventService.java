@@ -1,6 +1,5 @@
 package com.hello.event.service;
 
-
 import com.hello.event.enums.Category;
 import com.hello.event.model.Contact;
 import com.hello.event.model.Event;
@@ -18,11 +17,13 @@ public class EventService {
     private final EventRepository eventRepository;
 
     public List<Event> findAll() {
-       return eventRepository.findAll();
+        return eventRepository.findAll();
     }
+
     public Event save(Event event) {
         return eventRepository.save(event);
     }
+
     public List<Event> search(Category category, String location, LocalDateTime date) {
         return eventRepository.findEventByCategoryOrLocationOrDateTime(category, location, date);
     }
@@ -32,7 +33,16 @@ public class EventService {
         if (event.isPresent()) {
             return event.get().getContacts();
         } else {
-            throw new RuntimeException("event not found  : " + eventId);
+            throw new RuntimeException("Event not found: " + eventId);
         }
+    }
+
+    public Event getEventById(Long id) {
+        return eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found: " + id));
+    }
+
+    public void deleteEvent(Long id) {
+        eventRepository.deleteById(id);
     }
 }
