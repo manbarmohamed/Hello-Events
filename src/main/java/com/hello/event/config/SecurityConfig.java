@@ -21,57 +21,163 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+//@Configuration
+//@EnableWebSecurity
+//@EnableMethodSecurity
+//public class SecurityConfig {
+//
+//
+//    @Autowired
+//    JwtAuthFilter jwtAuthFilter;
+//
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return new UserAuthService();
+//    }
+//
+//
+//
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//      http.csrf(AbstractHttpConfigurer::disable)
+//        .cors(withDefaults())
+//        .sessionManagement(sessionManagement ->
+//          sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//        )
+//        .authorizeHttpRequests(authorizeRequests ->
+//          authorizeRequests
+//            .requestMatchers("/api/auth/**").permitAll()
+//            .requestMatchers("/v3/api-docs/**").permitAll()
+//            .requestMatchers("/swagger-ui/**").permitAll()
+//            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+//            .anyRequest().authenticated()
+//        );
+//
+//      http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//      return http.build();
+//    }
+//
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//      return new BCryptPasswordEncoder();
+//    }
+//
+//    @Bean
+//    public AuthenticationProvider authenticationProvider() {
+//      DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+//      authenticationProvider.setUserDetailsService(userDetailsService());
+//      authenticationProvider.setPasswordEncoder(passwordEncoder());
+//      return authenticationProvider;
+//    }
+//
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+//      return config.getAuthenticationManager();
+//    }
+//  }
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-
 
     @Autowired
     JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserAuthService();
+        return new UserAuthService(); // Consider using @Lazy here if needed
     }
-
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-      http.csrf(AbstractHttpConfigurer::disable)
-        .cors(withDefaults())
-        .sessionManagement(sessionManagement ->
-          sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        )
-        .authorizeHttpRequests(authorizeRequests ->
-          authorizeRequests
-            .requestMatchers("/api/auth/**").permitAll()
-            .requestMatchers("/v3/api-docs/**").permitAll()
-            .requestMatchers("/swagger-ui/**").permitAll()
-            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-            .anyRequest().authenticated()
-        );
+        http.csrf(AbstractHttpConfigurer::disable)
+                .cors(withDefaults())
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                                .anyRequest().authenticated()
+                );
 
-      http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-      return http.build();
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-      return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-      DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-      authenticationProvider.setUserDetailsService(userDetailsService());
-      authenticationProvider.setPasswordEncoder(passwordEncoder());
-      return authenticationProvider;
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        return authenticationProvider;
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-      return config.getAuthenticationManager();
+        return config.getAuthenticationManager();
     }
-  }
+}
+
+//@Configuration
+//@EnableWebSecurity
+//@EnableMethodSecurity
+//public class SecurityConfig {
+//
+//    @Autowired
+//    private JwtAuthFilter jwtAuthFilter;
+//
+//    @Autowired
+//    private UserAuthService userAuthService;
+//
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return userAuthService;
+//    }
+//
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http.csrf(AbstractHttpConfigurer::disable)
+//                .cors(withDefaults())
+//                .sessionManagement(sessionManagement ->
+//                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                )
+//                .authorizeHttpRequests(authorizeRequests ->
+//                        authorizeRequests
+//                                .requestMatchers("/api/auth/**").permitAll()
+//                                .requestMatchers("/v3/api-docs/**").permitAll()
+//                                .requestMatchers("/swagger-ui/**").permitAll()
+//                                .requestMatchers("/swagger-ui.html").permitAll()
+//                                .anyRequest().authenticated()
+//                );
+//
+//        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//        return http.build();
+//    }
+//
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+//
+//    @Bean
+//    public AuthenticationProvider authenticationProvider() {
+//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+//        authenticationProvider.setUserDetailsService(userDetailsService());
+//        authenticationProvider.setPasswordEncoder(passwordEncoder());
+//        return authenticationProvider;
+//    }
+//
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+//        return config.getAuthenticationManager();
+//    }
+//}
