@@ -11,7 +11,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 public class Reservation {
     @Id
@@ -23,7 +22,7 @@ public class Reservation {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "reservation")
-    @JsonIgnore
-    private List<Event> events;
+    @ManyToOne()
+    @JoinColumn(name = "event_id")
+    private Event event;
 }

@@ -1,24 +1,29 @@
 package com.hello.event.service;
 
+
+import com.hello.event.exception.ContactNotFoundExceptiion;
 import com.hello.event.model.Contact;
 import com.hello.event.repository.ContactRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-
+@RequiredArgsConstructor
 public class ContactService {
-    @Autowired
-    private ContactRepository contactRepository;
+
+    private final ContactRepository contactRepository;
+
+    public Contact save(Contact contact) {
+        return contactRepository.save(contact);
+    }
+    public Contact getContactById(long id) {
+        return contactRepository.findById(id).
+                orElseThrow(()-> new ContactNotFoundExceptiion("Contact not found"));
+    }
 
     public List<Contact> getAllContacts() {
         return contactRepository.findAll();
     }
-
-    public Contact addContact(Contact contact) {
-        return contactRepository.save(contact);
-    }
-
 }

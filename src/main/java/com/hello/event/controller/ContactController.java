@@ -2,7 +2,8 @@ package com.hello.event.controller;
 
 import com.hello.event.model.Contact;
 import com.hello.event.service.ContactService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,21 +11,24 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/contact")
+@RequiredArgsConstructor
 public class ContactController {
 
-    @Autowired
-    private ContactService contactService;
+    private final ContactService contactService;
 
-    @GetMapping
-    public ResponseEntity<List<Contact>> getAllContacts(){
-        List<Contact> contacts = contactService.getAllContacts();
-        return ResponseEntity.ok(contacts);
+    @GetMapping("/all")
+    public ResponseEntity<List<Contact>> getContacts() {
+        return ResponseEntity.ok(contactService.getAllContacts());
     }
-    @PostMapping
-    public ResponseEntity<Contact> addContact(@RequestBody Contact contact) {
-        Contact newContact = contactService.addContact(contact);
-        return ResponseEntity.ok(newContact);
+
+    @PostMapping("/add")
+    public ResponseEntity<Contact> saveContact(Contact contact) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(contactService.save(contact));
     }
 
 
+    @GetMapping("/{contact_id}")
+    public Contact findContactById( @PathVariable String contact_id) {
+        return contactService.getContactById(Long.parseLong(contact_id));
+    }
 }
