@@ -19,9 +19,8 @@ public class ContactService {
         return contactRepository.save(contact);
     }
     public Contact getContactById(long id) {
-        Contact contact = contactRepository.findById(id).
+        return contactRepository.findById(id).
                 orElseThrow(()-> new ContactNotFoundExceptiion("Contact not found"));
-        return contact;
     }
 
     public List<Contact> getAllContacts() {

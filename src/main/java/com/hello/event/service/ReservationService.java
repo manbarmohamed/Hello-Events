@@ -10,7 +10,7 @@ import com.hello.event.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static java.lang.Long.valueOf;
+
 
 @Service
 @RequiredArgsConstructor
