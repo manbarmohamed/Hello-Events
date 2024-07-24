@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/contact")
@@ -31,29 +32,43 @@ public class ContactController {
         List<Contact> contacts = eventService.getEventContacts(id);
         return ResponseEntity.ok(contacts);
     }
+
+@PreAuthorize("hasRole('CLIENT')")
+@PostMapping("/add")
+public ResponseEntity<Contact> saveContact(@RequestBody Contact contact) {
+    Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+    String username = loggedInUser.getName();
+    Contact savedContact = contactService.save(username, contact);
+    return ResponseEntity.status(HttpStatus.CREATED).body(savedContact);
+}
+    @GetMapping("/about")
+    public ResponseEntity<List<Map<String, String>>> getTeamAndValues() {
+        return ResponseEntity.ok(contactService.getTeamAndValues());
+    }
+}
 //    @GetMapping
 //    public ResponseEntity<List<Contact>> getMyContacts() {
 //        List<Contact> contacts = contactService.getAllContacts();
 //        return ResponseEntity.ok(contacts);
 //    }
 
-    @PostMapping("/add")
-    public ResponseEntity<Contact> saveContact(@RequestBody Contact contact) {
-        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        String username = loggedInUser.getName();
-        Contact savedContact = contactService.save(username, contact);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedContact);
-    }
+//    @PostMapping("/add")
+//    public ResponseEntity<Contact> saveContact(@RequestBody Contact contact) {
+//        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+//        String username = loggedInUser.getName();
+//        Contact savedContact = contactService.save(username, contact);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(savedContact);
+//    }
 
-    @GetMapping("/{contact_id}")
-    public ResponseEntity<Contact> findContactById(@PathVariable Long contact_id) {
-        Contact contact = contactService.getContactById(contact_id);
-        return ResponseEntity.ok(contact);
-    }
+//    @GetMapping("/{contact_id}")
+//    public ResponseEntity<Contact> findContactById(@PathVariable Long contact_id) {
+//        Contact contact = contactService.getContactById(contact_id);
+//        return ResponseEntity.ok(contact);
+//    }
 
 //    @GetMapping("/{id}")
 //    public ResponseEntity<List<Contact>> getEventContacts(@PathVariable Long id) {
 //        List<Contact> contacts = eventService.getEventContacts(id);
 //        return ResponseEntity.ok(contacts);
 //    }
-}
+
