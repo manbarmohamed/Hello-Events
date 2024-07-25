@@ -52,7 +52,7 @@ public class UserAuthService implements UserDetailsService {
             throw new UsernameAlreadyTaken("Username is already taken.");
         }
         if (userRequest.getRole() == null) {
-            userRequest.setRole(Role.CLIENT); // Définir un rôle par défaut
+            userRequest.setRole(Role.CLIENT);
         }
 
         userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
