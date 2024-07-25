@@ -20,6 +20,7 @@ public class EventController {
     private final EventService eventService;
 
 
+
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/all")
     public ResponseEntity<List<Event>> getAllEvents() {
@@ -45,19 +46,7 @@ public class EventController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/events")
-    public ResponseEntity<List<Event>> getAllEventsForAdmin() {
-        List<Event> events = eventService.findAll();
-        return ResponseEntity.ok(events);
-    }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/events")
-    public ResponseEntity<Event> saveOrUpdateEvent(@RequestBody Event event) {
-        Event savedEvent = eventService.save(event);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedEvent);
-    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/events/{id}")

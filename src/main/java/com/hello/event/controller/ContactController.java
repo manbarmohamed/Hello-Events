@@ -26,21 +26,22 @@ public class ContactController {
     private final EventService eventService;
 
 
-    @PreAuthorize("hasRole('CLIENT')")
-    @GetMapping("/{id}")
-    public ResponseEntity<List<Contact>> getEventContacts(@PathVariable Long id) {
-        List<Contact> contacts = eventService.getEventContacts(id);
-        return ResponseEntity.ok(contacts);
-    }
+//    @PreAuthorize("hasRole('CLIENT')")
+//    @GetMapping("/{id}")
+//    public ResponseEntity<List<Contact>> getEventContacts(@PathVariable Long id) {
+//        List<Contact> contacts = eventService.getEventContacts(id);
+//        return ResponseEntity.ok(contacts);
+//    }
 
 @PreAuthorize("hasRole('CLIENT')")
 @PostMapping("/add")
 public ResponseEntity<Contact> saveContact(@RequestBody Contact contact) {
-    Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-    String username = loggedInUser.getName();
-    Contact savedContact = contactService.save(username, contact);
+
+    Contact savedContact = contactService.save(contact);
     return ResponseEntity.status(HttpStatus.CREATED).body(savedContact);
 }
+    @PreAuthorize("hasRole('CLIENT')")
+
     @GetMapping("/about")
     public ResponseEntity<List<Map<String, String>>> getTeamAndValues() {
         return ResponseEntity.ok(contactService.getTeamAndValues());

@@ -2,9 +2,6 @@ package com.hello.event.service;
 
 import com.hello.event.dto.AuthRequestDTO;
 import com.hello.event.dto.JwtResponseDTO;
-import com.hello.event.enums.Role;
-import com.hello.event.enums.Role;
-import com.hello.event.exception.UsernameAlreadyTaken;
 import com.hello.event.model.User;
 import com.hello.event.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,18 +47,17 @@ public class UserAuthService implements UserDetailsService {
 
     public JwtResponseDTO signUp(User userRequest) {
         if (userRepository.findByUsername(userRequest.getName()) != null) {
-            throw new UsernameAlreadyTaken("Username is already taken.");
-        }
-        if (userRequest.getRole() == null) {
-            userRequest.setRole(Role.CLIENT);
+            throw new RuntimeException("Username is already taken.");
         }
 
-        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));        User savedUser = userRepository.save(userRequest);
-        String token = jwtService.generateToken(savedUser.getName());
+        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+
+        User savedUser = userRepository.save(userRequest);
+        String token = jwtService.generateToken(savedUser.getName(),savedUser.getRole());
 
         return JwtResponseDTO.builder()
                 .accessToken(token)
-                .username(savedUser.getName())
+                .user(savedUser)
                 .build();
     }
 
@@ -71,12 +67,12 @@ public class UserAuthService implements UserDetailsService {
         );
 
         if (authentication.isAuthenticated()) {
-            User user = userRepository.findByUsername(authRequestDTO.getUsername());
-            String token = jwtService.generateToken(user.getName());
+            User user =userRepository.findByUsername(authRequestDTO.getUsername());
+            String token = jwtService.generateToken(user.getName(),user.getRole());
 
             return JwtResponseDTO.builder()
                     .accessToken(token)
-                    .username(user.getUsername())
+                    .user(user)
                     .build();
         } else {
             throw new UsernameNotFoundException("Invalid user request.");
