@@ -1,5 +1,6 @@
 package com.hello.event.dto;
 
+import com.hello.event.enums.Role;
 import com.hello.event.model.User;
 import lombok.*;
 
@@ -9,8 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class JwtResponseDTO {
-
     private String accessToken;
-    private User user;
-
+    private String username;
 }

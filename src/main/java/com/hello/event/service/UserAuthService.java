@@ -3,6 +3,8 @@ package com.hello.event.service;
 import com.hello.event.dto.AuthRequestDTO;
 import com.hello.event.dto.JwtResponseDTO;
 import com.hello.event.enums.Role;
+import com.hello.event.enums.Role;
+import com.hello.event.exception.UsernameAlreadyTaken;
 import com.hello.event.model.User;
 import com.hello.event.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,7 @@ public class UserAuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = (User) userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
@@ -48,7 +50,10 @@ public class UserAuthService implements UserDetailsService {
 
     public JwtResponseDTO signUp(User userRequest) {
         if (userRepository.findByUsername(userRequest.getName()) != null) {
-            throw new RuntimeException("Username is already taken.");
+            throw new UsernameAlreadyTaken("Username is already taken.");
+        }
+        if (userRequest.getRole() == null) {
+            userRequest.setRole(Role.CLIENT);
         }
 
         userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));        User savedUser = userRepository.save(userRequest);
@@ -56,7 +61,7 @@ public class UserAuthService implements UserDetailsService {
 
         return JwtResponseDTO.builder()
                 .accessToken(token)
-                .user(savedUser)
+                .username(savedUser.getName())
                 .build();
     }
 
@@ -71,7 +76,7 @@ public class UserAuthService implements UserDetailsService {
 
             return JwtResponseDTO.builder()
                     .accessToken(token)
-                    .user(user)
+                    .username(user.getUsername())
                     .build();
         } else {
             throw new UsernameNotFoundException("Invalid user request.");

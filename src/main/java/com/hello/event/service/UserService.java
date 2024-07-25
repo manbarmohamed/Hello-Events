@@ -33,14 +33,9 @@ public class UserService implements UserDetailsService {
                 .build();
     }
 
-
-
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.CLIENT);
         return userRepository.save(user);
     }
 
@@ -64,4 +59,5 @@ public class UserService implements UserDetailsService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
 }
