@@ -40,12 +40,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User saveUser(User user) {
-//        if (userRepository.findByName(user.getName()).isPresent()) {
-//            throw new UsernameAlreadyTaken("Username is already taken.");
-//        }
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Role.client);
         return userRepository.save(user);
     }
 

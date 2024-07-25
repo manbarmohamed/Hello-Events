@@ -9,7 +9,7 @@ import com.hello.event.repository.EventRepository;
 import com.hello.event.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -19,6 +19,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final EventRepository eventRepository;
 
+    @Transactional
     public Reservation save(Reservation reservation) {
         Event event = eventRepository.findById(reservation.getEvent().getIdE())
                 .orElseThrow(() -> new EventNotFoundException("Event not found"));

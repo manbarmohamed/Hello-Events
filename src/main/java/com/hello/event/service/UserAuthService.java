@@ -2,6 +2,7 @@ package com.hello.event.service;
 
 import com.hello.event.dto.AuthRequestDTO;
 import com.hello.event.dto.JwtResponseDTO;
+import com.hello.event.enums.Role;
 import com.hello.event.model.User;
 import com.hello.event.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +51,7 @@ public class UserAuthService implements UserDetailsService {
             throw new RuntimeException("Username is already taken.");
         }
 
-        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-
-        User savedUser = userRepository.save(userRequest);
+        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));        User savedUser = userRepository.save(userRequest);
         String token = jwtService.generateToken(savedUser.getName());
 
         return JwtResponseDTO.builder()
@@ -67,7 +66,7 @@ public class UserAuthService implements UserDetailsService {
         );
 
         if (authentication.isAuthenticated()) {
-            User user = (User) userRepository.findByUsername(authRequestDTO.getUsername());
+            User user = userRepository.findByUsername(authRequestDTO.getUsername());
             String token = jwtService.generateToken(user.getName());
 
             return JwtResponseDTO.builder()
