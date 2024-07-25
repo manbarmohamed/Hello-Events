@@ -1,6 +1,7 @@
 package com.hello.event.controller;
 
 import com.hello.event.model.Contact;
+import com.hello.event.model.Event;
 import com.hello.event.model.User;
 import com.hello.event.service.ContactService;
 import com.hello.event.service.EventService;
@@ -36,7 +37,6 @@ public class ContactController {
 @PreAuthorize("hasRole('CLIENT')")
 @PostMapping("/add")
 public ResponseEntity<Contact> saveContact(@RequestBody Contact contact) {
-
     Contact savedContact = contactService.save(contact);
     return ResponseEntity.status(HttpStatus.CREATED).body(savedContact);
 }
@@ -45,6 +45,15 @@ public ResponseEntity<Contact> saveContact(@RequestBody Contact contact) {
     @GetMapping("/about")
     public ResponseEntity<List<Map<String, String>>> getTeamAndValues() {
         return ResponseEntity.ok(contactService.getTeamAndValues());
+    }
+
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CLIENT')")
+//    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/contacts")
+    public ResponseEntity<List<Contact>> getAllContacts() {
+        List<Contact> contacts = contactService.getAllContacts();
+        return ResponseEntity.ok(contacts);
     }
 }
 //    @GetMapping

@@ -18,11 +18,7 @@ public class ContactService {
     private final ContactRepository contactRepository;
     private final UserRepository userRepository;
 
-//    public Contact save(String username, Contact contact) {
-//        return contactRepository.save(contact);
-//    }
 public Contact save(Contact contact) {
-
     return contactRepository.save(contact);
 }
 
@@ -31,13 +27,9 @@ public Contact save(Contact contact) {
                 .orElseThrow(() -> new ContactNotFoundException("Contact not found"));
     }
 
-//    public List<Contact> getAllContacts() {
-//        return contactRepository.findAll();
-//    }
-//
-//    public List<Contact> getContactsByUsername(String username) {
-//        return contactRepository.findByUser_Username(username);
-//    }
+    public List<Contact> getAllContacts() {
+        return contactRepository.findAll();
+    }
 
     public List<Map<String, String>> getTeamAndValues() {
         return List.of(

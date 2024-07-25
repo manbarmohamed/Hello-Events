@@ -31,6 +31,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<JwtResponseDTO> registerUser(@RequestBody User user) {
         try {
+
             JwtResponseDTO response = userAuthService.signUp(user);
             return ResponseEntity.ok(response);
         } catch (Exception e) {

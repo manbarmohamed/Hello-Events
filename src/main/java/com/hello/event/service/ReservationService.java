@@ -3,6 +3,7 @@ package com.hello.event.service;
 
 import com.hello.event.exception.EventFullyBookedException;
 import com.hello.event.exception.EventNotFoundException;
+import com.hello.event.model.Contact;
 import com.hello.event.model.Event;
 import com.hello.event.model.Reservation;
 import com.hello.event.repository.EventRepository;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +21,11 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final EventRepository eventRepository;
+
+    public List<Reservation> getAllReservations() {
+        return reservationRepository.findAll();
+    }
+
 
     @Transactional
     public Reservation save(Reservation reservation) {

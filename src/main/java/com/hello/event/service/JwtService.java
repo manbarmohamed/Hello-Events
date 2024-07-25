@@ -68,7 +68,8 @@ public String generateToken(String username, Role role) {
             .setSubject(username)
             .setIssuedAt(new Date())
             .claim("role", role)
-            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 heures
+//            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+            .setExpiration(Date.from(now().plus(20, ChronoUnit.DAYS)))
             .signWith(SignatureAlgorithm.HS256, SECRET)
             .compact();
 }

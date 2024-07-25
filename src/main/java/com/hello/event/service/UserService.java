@@ -1,6 +1,7 @@
 package com.hello.event.service;
 
 import com.hello.event.enums.Role;
+import com.hello.event.exception.UserNotFoundException;
 import com.hello.event.exception.UsernameAlreadyTaken;
 import com.hello.event.model.User;
 import com.hello.event.repository.UserRepository;
@@ -41,13 +42,14 @@ public class UserService implements UserDetailsService {
 
     public User updateUser(User user, Long id) {
         User userToUpdate = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found!"));
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
         userToUpdate.setName(user.getName());
         userToUpdate.setUsername(user.getUsername());
         userToUpdate.setPhone(user.getPhone());
         userToUpdate.setAddress(user.getAddress());
         return userRepository.save(userToUpdate);
     }
+
 
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
