@@ -30,4 +30,9 @@ public class Event {
     @Column(name = "category", nullable = false, length = 225)
     private Category category;
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Reservation> reservations;
+
+
 }
