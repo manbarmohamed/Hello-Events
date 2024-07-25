@@ -26,55 +26,53 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private JwtAuthFilter jwtAuthFilter;
 
     @Autowired
-    private UserAuthService userAuthService;
+    JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return userAuthService;
+        return new UserAuthService();
     }
+
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .cors(withDefaults())
-                .sessionManagement(sessionManagement ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/v3/api-docs/**").permitAll()
-                                .requestMatchers("/swagger-ui/**").permitAll()
-                                .requestMatchers("/swagger-ui.html").permitAll()
-//                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-//                                .requestMatchers("/api/user/**").hasRole("USER")
-                                .requestMatchers("/api/contact").hasRole("CLIENT")
-                                .anyRequest().authenticated()
-                );
+      http.csrf(AbstractHttpConfigurer::disable)
+        .cors(withDefaults())
+        .sessionManagement(sessionManagement ->
+          sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        )
+        .authorizeHttpRequests(authorizeRequests ->
+          authorizeRequests
+            .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/v3/api-docs/**").permitAll()
+            .requestMatchers("/swagger-ui/**").permitAll()
+                  .requestMatchers("/api/reservation/**").permitAll()
+            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+            .anyRequest().authenticated()
+        );
 
-        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+      http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+      return http.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+      return new BCryptPasswordEncoder();
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
+      DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+      authenticationProvider.setUserDetailsService(userDetailsService());
+      authenticationProvider.setPasswordEncoder(passwordEncoder());
+      return authenticationProvider;
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+      return config.getAuthenticationManager();
     }
-}
+  }
