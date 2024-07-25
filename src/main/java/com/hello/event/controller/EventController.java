@@ -19,22 +19,7 @@ public class EventController {
 
     private final EventService eventService;
 
-    //    @GetMapping("/all")
-//    public ResponseEntity<List<Event>> getAllEvents() {
-//        return ResponseEntity.ok(eventService.findAll());
-//    }
-//    @PostMapping("/add")
-//    public ResponseEntity<Event> addEvent(@RequestBody Event event) {
-//        return ResponseEntity.status(HttpStatus.CREATED).body(eventService.save(event));
-//    }
-//
-//    @GetMapping("/search")
-//    public ResponseEntity<List<Event>> searchEvents(@RequestParam(required = false) Category category,
-//                                                    @RequestParam(required = false) String location,
-//                                                    @RequestParam(required = false) LocalDateTime date) {
-//        List<Event> eventList = eventService.search(category, location, date);
-//        return ResponseEntity.ok(eventList);
-//    }
+
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/all")
     public ResponseEntity<List<Event>> getAllEvents() {
@@ -42,7 +27,7 @@ public class EventController {
         return ResponseEntity.ok(events);
     }
 
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Event> addEvent(@RequestBody Event event) {
         Event savedEvent = eventService.save(event);

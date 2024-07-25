@@ -3,6 +3,7 @@ package com.hello.event.service;
 import com.hello.event.dto.AuthRequestDTO;
 import com.hello.event.dto.JwtResponseDTO;
 import com.hello.event.enums.Role;
+import com.hello.event.enums.Role;
 import com.hello.event.exception.UsernameAlreadyTaken;
 import com.hello.event.model.User;
 import com.hello.event.repository.UserRepository;
@@ -55,8 +56,7 @@ public class UserAuthService implements UserDetailsService {
             userRequest.setRole(Role.CLIENT);
         }
 
-        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        User savedUser = userRepository.save(userRequest);
+        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));        User savedUser = userRepository.save(userRequest);
         String token = jwtService.generateToken(savedUser.getName());
 
         return JwtResponseDTO.builder()
@@ -72,7 +72,7 @@ public class UserAuthService implements UserDetailsService {
 
         if (authentication.isAuthenticated()) {
             User user = userRepository.findByUsername(authRequestDTO.getUsername());
-            String token = jwtService.generateToken(user.getUsername());
+            String token = jwtService.generateToken(user.getName());
 
             return JwtResponseDTO.builder()
                     .accessToken(token)

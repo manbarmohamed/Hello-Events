@@ -5,7 +5,6 @@ import com.hello.event.exception.UsernameAlreadyTaken;
 import com.hello.event.model.User;
 import com.hello.event.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,11 +16,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
-@Autowired
-    private  UserRepository userRepository;
-    @Autowired
 
-    private  PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,17 +33,7 @@ public class UserService implements UserDetailsService {
                 .build();
     }
 
-
-
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
     public User saveUser(User user) {
-//        if (userRepository.findByName(user.getName()).isPresent()) {
-//            throw new UsernameAlreadyTaken("Username is already taken.");
-//        }
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.CLIENT);
         return userRepository.save(user);
@@ -73,7 +60,4 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findById(Long.valueOf(username)).orElse(null);
-    }
 }
