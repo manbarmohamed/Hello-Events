@@ -21,10 +21,8 @@ public class ContactService {
 //    public Contact save(String username, Contact contact) {
 //        return contactRepository.save(contact);
 //    }
-public Contact save(String username, Contact contact) {
-    // Fetch user by username and set it to the contact
-    User user = userRepository.findByUsername(username);
-    contact.setUser(user);
+public Contact save(Contact contact) {
+
     return contactRepository.save(contact);
 }
 
@@ -33,13 +31,13 @@ public Contact save(String username, Contact contact) {
                 .orElseThrow(() -> new ContactNotFoundException("Contact not found"));
     }
 
-    public List<Contact> getAllContacts() {
-        return contactRepository.findAll();
-    }
-
-    public List<Contact> getContactsByUsername(String username) {
-        return contactRepository.findByUser_Username(username);
-    }
+//    public List<Contact> getAllContacts() {
+//        return contactRepository.findAll();
+//    }
+//
+//    public List<Contact> getContactsByUsername(String username) {
+//        return contactRepository.findByUser_Username(username);
+//    }
 
     public List<Map<String, String>> getTeamAndValues() {
         return List.of(

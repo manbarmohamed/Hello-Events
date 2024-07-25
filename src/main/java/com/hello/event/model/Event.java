@@ -26,14 +26,8 @@ public class Event {
     private LocalDateTime dateTime;
     private String location ;
     private Integer capacity;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false, length = 225)
     private Category category;
 
-//   @OneToMany(mappedBy = "event")
-//    List<Reservation> reservations;
-
-@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-private List<Contact> contacts = new ArrayList<>();
 }

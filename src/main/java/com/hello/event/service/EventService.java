@@ -28,14 +28,14 @@ public class EventService {
         return eventRepository.findEventByCategoryOrLocationOrDateTime(category, location, date);
     }
 
-    public List<Contact> getEventContacts(Long eventId) {
-        Optional<Event> event = eventRepository.findById(eventId);
-        if (event.isPresent()) {
-            return event.get().getContacts();
-        } else {
-            throw new RuntimeException("Event not found: " + eventId);
-        }
-    }
+//    public List<Contact> getEventContacts(Long eventId) {
+//        Optional<Event> event = eventRepository.findById(eventId);
+//        if (event.isPresent()) {
+//            return event.get().getContacts();
+//        } else {
+//            throw new RuntimeException("Event not found: " + eventId);
+//        }
+//    }
 
     public Event getEventById(Long id) {
         return eventRepository.findById(id)

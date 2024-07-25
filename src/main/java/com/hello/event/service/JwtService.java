@@ -1,5 +1,6 @@
 package com.hello.event.service;
 
+import com.hello.event.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -62,10 +63,11 @@ public class JwtService {
 //        Map<String, Object> claims = new HashMap<>();
 //        return createToken(claims, username);
 //    }
-public String generateToken(String username) {
+public String generateToken(String username, Role role) {
     return Jwts.builder()
             .setSubject(username)
             .setIssuedAt(new Date())
+            .claim("role", role)
             .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 heures
             .signWith(SignatureAlgorithm.HS256, SECRET)
             .compact();
