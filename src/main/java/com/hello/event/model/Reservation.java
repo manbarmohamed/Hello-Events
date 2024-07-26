@@ -1,6 +1,8 @@
 package com.hello.event.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +23,9 @@ public class Reservation {
     private LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     @ManyToOne()
