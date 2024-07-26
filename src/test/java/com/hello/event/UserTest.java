@@ -2,8 +2,11 @@
 //
 //import com.hello.event.enums.Category;
 //import com.hello.event.model.Event;
+//import com.hello.event.model.User;
 //import com.hello.event.repository.EventRepository;
+//import com.hello.event.repository.UserRepository;
 //import com.hello.event.service.EventService;
+//import com.hello.event.service.UserService;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.mockito.InjectMocks;
@@ -11,7 +14,6 @@
 //import org.springframework.boot.test.context.SpringBootTest;
 //
 //import java.time.LocalDateTime;
-//import java.util.ArrayList;
 //import java.util.List;
 //import java.util.Optional;
 //
@@ -20,31 +22,31 @@
 //import static org.mockito.Mockito.*;
 //
 //@SpringBootTest
-//class EventTest {
+//class UserTest {
 //
 //	@Mock
-//	private EventRepository eventRepository;
+//	private UserRepository userRepository;
 //
 //	@InjectMocks
-//	private EventService eventService;
+//	private UserService userService;
 //
-//	private Event eventTest;
+//	private User userTest;
 //
 //	@BeforeEach
 //	void setUp() {
-//		eventTest = new Event();
-//		eventTest.setIdE(1L);
-//		eventTest.setName("ceremonie");
-//		eventTest.setCategory(Category.CONFERENCE);
-//		eventTest.setDescription("diploma distribution ceremony");
-//		eventTest.setDateTime(LocalDateTime.of(2023, 1, 1, 10, 0));
-//		eventTest.setCapacity(67);
+//		userTest = new User();
+//		userTest.setId(1L);
+//		userTest.setName("admin");
+//		userTest.setUsername("admin");
+//		userTest.setPassword("1234");
+//	    userTest.setAddress("morocco");
+//		userTest.setPhone("0067");
 //	}
 //
 //	@Test
 //	public void testGetters() {
-//		assertEquals(1L, eventTest.getIdE());
-//		assertEquals("ceremonie", eventTest.getName());
+//		assertEquals(1L, userTest.getId());
+//		assertEquals("admin", userTest.getName());
 //		assertEquals(Category.CONFERENCE, eventTest.getCategory());
 //		assertEquals(67, eventTest.getCapacity());
 //		assertEquals(LocalDateTime.of(2023, 1, 1, 10, 0), eventTest.getDateTime());
