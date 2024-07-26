@@ -28,14 +28,6 @@ public class EventService {
         return eventRepository.findEventByCategoryOrLocationOrDateTime(category, location, date);
     }
 
-//    public List<Contact> getEventContacts(Long eventId) {
-//        Optional<Event> event = eventRepository.findById(eventId);
-//        if (event.isPresent()) {
-//            return event.get().getContacts();
-//        } else {
-//            throw new RuntimeException("Event not found: " + eventId);
-//        }
-//    }
 
     public Event getEventById(Long id) {
         return eventRepository.findById(id)
@@ -44,5 +36,17 @@ public class EventService {
 
     public void deleteEvent(Long id) {
         eventRepository.deleteById(id);
+    }
+    public Event updateEvent(Long id, Event updatedEvent) {
+        Event existingEvent = eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found: " + id));
+        existingEvent.setName(updatedEvent.getName());
+        existingEvent.setDescription(updatedEvent.getDescription());
+        existingEvent.setDateTime(updatedEvent.getDateTime());
+        existingEvent.setLocation(updatedEvent.getLocation());
+        existingEvent.setCapacity(updatedEvent.getCapacity());
+        existingEvent.setCategory(updatedEvent.getCategory());
+
+        return eventRepository.save(existingEvent);
     }
 }
