@@ -23,12 +23,13 @@ public class Reservation {
     private LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-
+@JsonIgnore
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
 
     @ManyToOne()
     @JoinColumn(name = "event_id")
+
     private Event event;
 }
