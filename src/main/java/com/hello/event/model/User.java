@@ -35,6 +35,7 @@ public class User {
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @JsonIgnore
     private List<Reservation> reservations;
 
 }
