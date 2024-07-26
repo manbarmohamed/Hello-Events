@@ -66,20 +66,5 @@ cd hello-events
 
 La documentation de l'API est disponible via Swagger UI à l'adresse http://localhost:8080/swagger-ui.html.
 
-**POST /api/auth/signup : Enregistre un nouvel utilisateur.
-***Corps de la requête:
-{
-  "username": "string",
-  "email": "string",
-  "password": "string"
-}
-
-**POST /api/auth/login : Authentifie un utilisateur et retourne un JWT.
-***Corps de la requête:
-{
-  "username": "string",
-  "password": "string"
-}
-
 
 
